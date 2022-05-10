@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:login_page_firebase_flutter/constants.dart';
-import 'package:login_page_firebase_flutter/pages/login_page.dart';
+import 'package:login_page_firebase_flutter/main_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp();
 
   runApp(const MyApp());
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const LoginPage(),
+      home: const MainPage(),
     );
   }
 }
