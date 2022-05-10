@@ -1,27 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_page_firebase_flutter/constants.dart';
 import 'package:login_page_firebase_flutter/pages/components/action_btn.dart';
 
-class LoginPage extends StatefulWidget {
-  final VoidCallback showRegisterPage;
-  const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  final VoidCallback showLoginPage;
+
+  const RegisterPage({Key? key, required this.showLoginPage}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  Future login() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim());
-  }
+  final confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -30,6 +26,20 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  Future signUp() async {
+    if (passwordConfirmed()) {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim()
+      );
+    }
+  }
+
+  bool passwordConfirmed() {
+    return passwordController.text.trim() == confirmPasswordController.text.trim() ? true : false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: kBackgroundColor,
@@ -42,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                   SvgPicture.asset('assets/images/logo/firebase-logo.svg',
                       height: 100),
                   Text(
-                    'Login Page',
+                    'Register Page',
                     style: GoogleFonts.mako(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
@@ -51,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: kDefaultPadding),
                   const Text(
-                    'Nice to see you again!',
+                    'Register with your email and password',
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -59,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: kDefaultPadding * 3),
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -85,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: kDefaultPadding),
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -110,16 +120,43 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: kDefaultPadding),
-                  ActionBtn(text: 'Log in', press: login),
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: kPrimaryColor),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: TextField(
+                        controller: confirmPasswordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: kDefaultPadding,
+                            horizontal: kDefaultPadding,
+                          ),
+                          hintText: 'Confirm Password',
+                          hintStyle: GoogleFonts.mako(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: kDefaultPadding),
+                  ActionBtn(text: 'Sign Up', press: signUp),
                   const SizedBox(height: kDefaultPadding / 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Not a member? '),
+                      const Text('I am a member! '),
                       GestureDetector(
-                        onTap: widget.showRegisterPage,
+                        onTap: widget.showLoginPage,
                         child: const Text(
-                          'Register now',
+                          'Login now',
                           style: TextStyle(color: Colors.blue),
                         ),
                       ),

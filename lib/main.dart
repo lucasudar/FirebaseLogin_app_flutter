@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_page_firebase_flutter/constants.dart';
-import 'package:login_page_firebase_flutter/main_page.dart';
+import 'package:login_page_firebase_flutter/pages/auth/main_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
