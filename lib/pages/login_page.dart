@@ -4,9 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_page_firebase_flutter/constants.dart';
 import 'package:login_page_firebase_flutter/pages/components/action_btn.dart';
+import 'package:login_page_firebase_flutter/pages/forgot_psw_page.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
+
   const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
 
   @override
@@ -26,7 +28,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool emailAndPasswordValid() {
-    return emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
+    return emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty;
   }
 
   @override
@@ -115,9 +118,31 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: kDefaultPadding / 2),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding + 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ForgotPasswordPage(),
+                              ),
+                            );
+                          },
+                          child: const Text('Forgot Password?',
+                              style: TextStyle(color: Colors.blue)),
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: kDefaultPadding),
                   ActionBtn(text: 'Log in', press: login),
-                  const SizedBox(height: kDefaultPadding / 2),
+                  const SizedBox(height: kDefaultPadding),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
