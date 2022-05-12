@@ -18,9 +18,15 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   Future login() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim());
+    if (emailAndPasswordValid()) {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+    }
+  }
+
+  bool emailAndPasswordValid() {
+    return emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
   }
 
   @override

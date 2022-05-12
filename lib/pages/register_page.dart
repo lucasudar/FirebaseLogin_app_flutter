@@ -27,16 +27,24 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future signUp() async {
-    if (passwordConfirmed()) {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim()
-      );
+    try {
+      if (passwordConfirmed() && emailAndPasswordValid()) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim()
+        );
+      }
+    } on Exception catch (e) {
+      print(e);
     }
   }
 
   bool passwordConfirmed() {
     return passwordController.text.trim() == confirmPasswordController.text.trim() ? true : false;
+  }
+
+  bool emailAndPasswordValid() {
+    return emailController.text.trim().isNotEmpty && passwordController.text.trim().isNotEmpty && confirmPasswordController.text.trim().isNotEmpty;
   }
 
   @override
